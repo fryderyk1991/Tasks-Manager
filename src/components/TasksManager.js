@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { get, create } from '../fetchTask'
+import { create } from '../fetchTask'
 class TasksManager extends React.Component {
     state = {
         name: '',
@@ -15,13 +15,24 @@ class TasksManager extends React.Component {
     }
     submitHandler = e => {
         e.preventDefault();
-        const { name } = this.state;
+        const { name, tasks } = this.state;
         if(name) {
-            // tutaj kod z fetchTask
-           create(name)
+            const newItem = {
+                name: name,
+                time: 0,
+                isRuning: false,
+                isDone: false,
+                isRemoved: false
+            }
+          create(newItem)
+          .then(data => this.setState({
+            tasks: [...tasks, data]
+          }))
+          .catch(err => console.log(err));
            this.setState({
-             name: "",
+             name: '',
            })
+         
         }
     }
     render() {
