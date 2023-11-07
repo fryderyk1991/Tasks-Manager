@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { create } from '../fetchTask'
+import { create, load } from '../fetchTask'
 class TasksManager extends React.Component {
     state = {
         name: '',
         tasks: [],
     }
-    
+  
     inputChange = e => {
         const value = e.target.value;
         this.setState({
@@ -25,8 +25,8 @@ class TasksManager extends React.Component {
                 isRemoved: false
             }
           create(newItem)
-          .then(data => this.setState({
-            tasks: [...tasks, data]
+          .then(task => this.setState({
+            tasks: [...tasks, task]
           }))
           .catch(err => console.log(err));
            this.setState({
@@ -34,10 +34,33 @@ class TasksManager extends React.Component {
            })
          
         }
+        else {
+            alert('add task !');
+        }
+    }
+    
+    renderTasks(arr) {
+        const task = arr.map(item => <section key={item.id}>
+            <header>{item.name}, {item.time}</header>
+            <footer>
+                <button>start/stop</button>
+                <button>done</button>
+                <button>delete</button>
+            </footer>
+        </section>)
+
+        return task;
     }
     render() {
-        const { name } = this.state
+        const { name, tasks } = this.state;
+        load()
+        .then(data => this.setState({
+            tasks: data,
+        }))
+        .catch(err => console.log(err));
+
         return (
+            <>
             <div className='form__container'>
             <form className='form' onSubmit={ this.submitHandler }>
                 <label className='form__label'>Name</label>
@@ -45,8 +68,11 @@ class TasksManager extends React.Component {
                 <button type='submit' className='form__submit'>Add Task</button>
             </form>
             </div>
+            <div className='task__container'>{this.renderTasks(tasks)}</div>
+            </>
         )
     }
+   
 }
 
 export default TasksManager;
