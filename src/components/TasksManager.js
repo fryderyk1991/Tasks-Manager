@@ -51,14 +51,15 @@ class TasksManager extends React.Component {
 
         return task;
     }
+    componentDidMount() {
+        load()
+        .then(data => {
+            this.setState({ tasks: data })
+        })
+        .catch(err => console.log(err))
+    }
     render() {
         const { name, tasks } = this.state;
-        load()
-        .then(data => this.setState({
-            tasks: data,
-        }))
-        .catch(err => console.log(err));
-
         return (
             <>
             <div className='form__container'>
