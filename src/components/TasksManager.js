@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { create, load } from '../fetchTask'
+import { create, load} from '../fetchTask'
 class TasksManager extends React.Component {
     state = {
         name: '',
@@ -38,19 +38,45 @@ class TasksManager extends React.Component {
         else {
             alert('add task !');
         }
+    }  
+
+    startAndStopTheTask = (e) => {
+        const { tasks } = this.state;
+        const currentBtn = e.target;
+        const currentId = +currentBtn.parentElement.id;
+        this.setState(() => {
+            const newTask = tasks.map(task => {
+               if(task.id === currentId) {
+                    return { ...task, isRuning: !task.isRuning}
+               }
+               return task
+            });
+            return {
+                tasks: newTask,
+            }
+        })
+       const taskTimer = setInterval(() => this.incrementTime(currentId), 1000)
     }
-    startTask = e => {
-        const { tasks } = this.state
-        const startBtn = e.target; 
-        const btnId = startBtn.id;
-        console.log(tasks)
+
+    incrementTime(id) {
+        const { tasks } = this.state;
+        this.setState(() => {
+            const newTask = tasks.map(task => {
+               if(task.id === id) {
+                    return { ...task, time: task.time + 1}
+               }
+               return task
+            });
+            return {
+                tasks: newTask,
+            }
+        })
     }
     renderTasks(arr) {
-      
         const task = arr.map(item => <section className='task__container' key={item.id}>
             <header className='task__header'>{item.name}, {item.time}</header>
-            <footer className='task__footer'>
-                <button className='task__btn task__btn--start' onClick={ this.startTask } id={item.id}>start/stop</button>
+            <footer className='task__footer' id={item.id}>
+                <button className='task__btn task__btn--start' onClick={ this.startAndStopTheTask }>{item.isRuning ? 'stop' : 'start'}</button>
                 <button className='task__btn task__btn--done'>done</button>
                 <button disabled={true} className='task__btn task__btn--delete'>delete</button>
             </footer>
