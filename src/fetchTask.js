@@ -15,8 +15,6 @@ function fetchData(options = {method: 'GET'}, id = '') {
   })
   .catch(err => console.log(err))
 }
-
-
 export function load() {
   return fetchData();
 }
@@ -27,4 +25,18 @@ const options = {
    headers: { 'Content-Type': 'application/json'},
 }
 return fetchData(options)
+}
+
+export function update(id, data) {
+  const options = {
+    method: 'PUT',
+    body: JSON.stringify( data ),
+    headers: { 'Content-Type': 'application/json'},
+ }
+ return fetchData(options, `/${id}`)
+}
+
+export function deleteData(id) {
+  const options = { method: 'DELETE'};
+   return fetch(options, `/${id}`);
 }

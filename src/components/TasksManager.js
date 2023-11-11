@@ -5,6 +5,7 @@ class TasksManager extends React.Component {
     state = {
         name: '',
         tasks: [],
+        time: 0,
     }
   
     inputChange = e => {
@@ -15,11 +16,11 @@ class TasksManager extends React.Component {
     }
     submitHandler = e => {
         e.preventDefault();
-        const { name, tasks } = this.state;
+        const { name, tasks, time} = this.state;
         if(name) {
             const newItem = {
                 name: name,
-                time: 0,
+                time: time,
                 isRuning: false,
                 isDone: false,
                 isRemoved: false
@@ -38,14 +39,20 @@ class TasksManager extends React.Component {
             alert('add task !');
         }
     }
-    
+    startTask = e => {
+        const { tasks } = this.state
+        const startBtn = e.target; 
+        const btnId = startBtn.id;
+        console.log(tasks)
+    }
     renderTasks(arr) {
-        const task = arr.map(item => <section key={item.id}>
-            <header>{item.name}, {item.time}</header>
-            <footer>
-                <button>start/stop</button>
-                <button>done</button>
-                <button>delete</button>
+      
+        const task = arr.map(item => <section className='task__container' key={item.id}>
+            <header className='task__header'>{item.name}, {item.time}</header>
+            <footer className='task__footer'>
+                <button className='task__btn task__btn--start' onClick={ this.startTask } id={item.id}>start/stop</button>
+                <button className='task__btn task__btn--done'>done</button>
+                <button disabled={true} className='task__btn task__btn--delete'>delete</button>
             </footer>
         </section>)
 
@@ -66,7 +73,7 @@ class TasksManager extends React.Component {
             <form className='form' onSubmit={ this.submitHandler }>
                 <label className='form__label'>Name</label>
                 <input className='form__input' value={ name } onChange={ this.inputChange }/>
-                <button type='submit' className='form__submit'>Add Task</button>
+                <button type='submit' className='form__submit--button'>Add Task</button>
             </form>
             </div>
             <div className='task__container'>{this.renderTasks(tasks)}</div>
