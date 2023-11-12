@@ -10,7 +10,6 @@ class TasksManager extends React.Component {
             minutes: 0,
             hours:0
         },
-        intervals: {},
     }
   
     inputChange = e => {
@@ -45,10 +44,13 @@ class TasksManager extends React.Component {
         }
     }  
     startTask = (currentId) => {
+        const intervalId = setInterval(() => {
+            this.incrementTime(currentId)
+        }, 1000)
         this.setState((state) => {
             const newTask = state.tasks.map((task) => {
                 if (task.id === currentId) {
-                    return { ...task, isRuning: true };
+                    return { ...task, isRuning: task.isRuning = true, intervalId: intervalId};
                 }
                 return task;
             });
@@ -61,7 +63,9 @@ class TasksManager extends React.Component {
         this.setState((state) => {
             const newTask = state.tasks.map((task) => {
                 if (task.id === currentId) {
-                    return { ...task, isRuning: false };
+                    clearInterval(task.intervalId);
+                    console.log(task)
+                    return { ...task, isRuning: task.isRuning = false};
                 }
                 return task;
             });
@@ -71,30 +75,43 @@ class TasksManager extends React.Component {
         });
     };
     startAndStopTheTask = (e) => {
+        const { tasks } = this.state;
         const currentBtn = e.target;
         const currentId = +currentBtn.parentElement.id;
-    
         if (currentBtn.innerText === 'start') {
             this.startTask(currentId);
         } else {
             this.stopTask(currentId);
         }
-    
-        this.incrementTime(currentId);
     }
+
     incrementTime(id) {
-        this.setState(state => {
-            const newTask = state.tasks.map(task => {
-               if(task.id === id) {
-                    const newTime = { ...task.time, seconds: task.time.seconds + 1};
-                    return { ...task, time: newTime}
-               }
-               return task
+        this.setState((state) => {
+            const newTask = state.tasks.map((task) => {
+                if (task.id === id) {
+                    let newSeconds = task.time.seconds + 1;
+                    let newMinutes = task.time.minutes;
+                    
+                    if (newSeconds === 60) {
+                        newSeconds = 0;
+                        newMinutes += 1;
+                    }
+    
+                    const newTime = {
+                        ...task.time,
+                        seconds: newSeconds,
+                        minutes: newMinutes,
+                    };
+    
+                    return { ...task, time: newTime };
+                }
+                return task;
             });
+    
             return {
                 tasks: newTask,
-            }
-        })
+            };
+        });
     }
     renderTasks(arr) {
         const task = arr.map(item => <section className='task__container' key={item.id}>
