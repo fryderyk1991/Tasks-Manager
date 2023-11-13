@@ -38,5 +38,5 @@ export function update(id, data) {
 
 export function deleteData(id) {
   const options = { method: 'DELETE'};
-   return fetch(options, `/${id}`);
+   return fetchData(options, `/${id}`);
 }

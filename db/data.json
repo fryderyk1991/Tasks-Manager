@@ -1,16 +1,3 @@
 {
-  "data": [
-    {
-      "name": "Bieganie",
-      "time": {
-        "seconds": 0,
-        "minutes": 0,
-        "hours": 0
-      },
-      "isRuning": false,
-      "isDone": false,
-      "isRemoved": false,
-      "id": 1
-    }
-  ]
+  "data": []
 }

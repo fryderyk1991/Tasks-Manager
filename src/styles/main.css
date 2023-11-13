@@ -1,5 +1,8 @@
 body {
-    background: #dcdcdc;
+    background-color: #a2a8d3;
+}
+button {
+    color: inherit;
 }
 .task__btn--done {
     background-color: red;
@@ -8,4 +11,49 @@ body {
 .task__btn--done-done {
     background-color: green;
     color: white;
+}
+.form__container { 
+    max-width: 80%;
+    margin: 0 auto 20px;
+}
+.form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+.form__input {
+    margin: 0 5px;
+    padding: 5px 5px;
+    border-radius: 3px;
+    border: #38598b 1px solid;
+    outline: none;
+}
+.form__submit--button {
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: 1px #e7eaf6 solid;
+    background-color: #a2a8d3;
+    cursor: pointer;
+}
+
+.task__container {
+    max-width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.task__header {
+    text-align: center;
+    font-size: 16px;
+    color: #e7eaf6;
+}
+.task__footer {
+    margin: 5px 0;
+}
+.task__btn {
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: none;
 }

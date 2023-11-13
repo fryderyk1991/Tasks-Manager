@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { create, load} from '../fetchTask'
+import { create, load, update, deleteData} from '../fetchTask'
 class TasksManager extends React.Component {
     state = {
         name: '',
@@ -50,6 +50,7 @@ class TasksManager extends React.Component {
         this.setState((state) => {
             const newTasks = state.tasks.map((task) => {
                 if (task.id === currentId) {
+                    update(currentId, task)
                     return { ...task, isRuning: task.isRuning = true, intervalId: intervalId};
                 }
                 return task;
@@ -63,8 +64,8 @@ class TasksManager extends React.Component {
         this.setState((state) => {
             const newTasks = state.tasks.map((task) => {
                 if (task.id === currentId) {
+                    update(currentId, task)
                     clearInterval(task.intervalId);
-                    console.log(task)
                     return { ...task, isRuning: task.isRuning = false};
                 }
                 return task;
@@ -95,6 +96,7 @@ class TasksManager extends React.Component {
         this.setState((state) => {
             const newTasks = state.tasks.map((task) => {
                 if (task.id === currentId) {
+                    update(currentId, task)
                     clearInterval(task.intervalId);
                     if(!task.isDone) {
                         return { ...task, isRuning: task.isRuning = false, isDone: task.isDone = true};
@@ -121,6 +123,7 @@ class TasksManager extends React.Component {
         this.setState((state) => {
             const newTasks = state.tasks.map((task) => {
                 if (task.id === currentId) {
+                    deleteData(currentId)
                     return { ...task, isRuning: task.isRuning = false, isDone: task.isDone = true, isRemoved: task.isRemoved = true};
                 }
                 return task;
@@ -160,10 +163,10 @@ class TasksManager extends React.Component {
     }
     renderTasks(arr) {
         const task = arr.map(item => <section className='task__container' key={item.id}>
-            <header className='task__header'>{item.name},{item.time.hours < 10 ? '0' + item.time.hours : item.time.hours}:{item.time.minutes < 10 ? '0' + item.time.minutes : item.time.minutes}:{item.time.seconds < 10 ? '0' + item.time.seconds : item.time.seconds}</header>
+            <header className='task__header'>{item.name}, {item.time.hours < 10 ? '0' + item.time.hours : item.time.hours}:{item.time.minutes < 10 ? '0' + item.time.minutes : item.time.minutes}:{item.time.seconds < 10 ? '0' + item.time.seconds : item.time.seconds}</header>
             <footer className='task__footer' id={item.id}>
                 <button disabled={item.isDone ? 'disabled' : null} className='task__btn task__btn--start' onClick={ this.startAndStopTheTask }>{item.isRuning ? 'stop' : 'start'}</button>
-                 <button className={`${item.isDone ? 'task__btn--done-done' : 'task__btn--done'}`} onClick={ this.taskCompleted }>done</button>
+                 <button className={`${item.isDone ? 'task__btn task__btn--done-done' : 'task__btn  task__btn--done'}`} onClick={ this.taskCompleted }>done</button>
                 <button disabled={item.isDone ? null : 'disabled'} className='task__btn task__btn--delete' onClick={ this.deleteTask }>delete</button>
             </footer>
         </section>)
