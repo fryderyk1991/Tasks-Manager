@@ -48,20 +48,20 @@ class TasksManager extends React.Component {
             this.incrementTime(currentId)
         }, 1000)
         this.setState((state) => {
-            const newTask = state.tasks.map((task) => {
+            const newTasks = state.tasks.map((task) => {
                 if (task.id === currentId) {
                     return { ...task, isRuning: task.isRuning = true, intervalId: intervalId};
                 }
                 return task;
             });
             return {
-                tasks: newTask,
+                tasks: newTasks,
             };
         });
     };
     stopTask = (currentId) => {
         this.setState((state) => {
-            const newTask = state.tasks.map((task) => {
+            const newTasks = state.tasks.map((task) => {
                 if (task.id === currentId) {
                     clearInterval(task.intervalId);
                     console.log(task)
@@ -70,12 +70,11 @@ class TasksManager extends React.Component {
                 return task;
             });
             return {
-                tasks: newTask,
+                tasks: newTasks,
             };
         });
     };
-    startAndStopTheTask = (e) => {
-        const { tasks } = this.state;
+    startAndStopTheTask = e => {
         const currentBtn = e.target;
         const currentId = +currentBtn.parentElement.id;
         if (currentBtn.innerText === 'start') {
@@ -84,10 +83,37 @@ class TasksManager extends React.Component {
             this.stopTask(currentId);
         }
     }
+    
+    sortTask = (arr) => {
+        const sorted = arr.sort((a, b) => (a.isDone ? 1 : 0) - (b.isDone ? 1 : 0));
+        return sorted;
+    } 
 
+    taskCompleted = e => {
+        const { tasks } = this.state;
+        console.log(tasks)
+        const currentBtn = e.target;
+        const currentId = +currentBtn.parentElement.id;
+        this.setState((state) => {
+            const newTasks = state.tasks.map((task) => {
+                if (task.id === currentId) {
+                    clearInterval(task.intervalId);
+                    if(!task.isDone) {
+                        return { ...task, isRuning: task.isRuning = false, isDone: task.isDone = true};
+                    }
+                    
+                }
+                return task;
+            });
+
+            return {
+                tasks: this.sortTask(newTasks),
+            };
+        });
+    }
     incrementTime(id) {
         this.setState((state) => {
-            const newTask = state.tasks.map((task) => {
+            const newTasks = state.tasks.map((task) => {
                 if (task.id === id) {
                     let newSeconds = task.time.seconds + 1;
                     let newMinutes = task.time.minutes;
@@ -109,7 +135,7 @@ class TasksManager extends React.Component {
             });
     
             return {
-                tasks: newTask,
+                tasks: newTasks,
             };
         });
     }
@@ -118,7 +144,7 @@ class TasksManager extends React.Component {
             <header className='task__header'>{item.name},{item.time.hours < 10 ? '0' + item.time.hours : item.time.hours}:{item.time.minutes < 10 ? '0' + item.time.minutes : item.time.minutes}:{item.time.seconds < 10 ? '0' + item.time.seconds : item.time.seconds}</header>
             <footer className='task__footer' id={item.id}>
                 <button className='task__btn task__btn--start' onClick={ this.startAndStopTheTask }>{item.isRuning ? 'stop' : 'start'}</button>
-                <button className='task__btn task__btn--done'>done</button>
+                 <button className={`${item.isDone ? 'task__btn--done-done' : 'task__btn--done'}`} onClick={ this.taskCompleted }>done</button>
                 <button disabled={true} className='task__btn task__btn--delete'>delete</button>
             </footer>
         </section>)

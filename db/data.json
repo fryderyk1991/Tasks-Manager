@@ -11,6 +11,18 @@
       "isDone": false,
       "isRemoved": false,
       "id": 1
+    },
+    {
+      "name": "Push ups",
+      "time": {
+        "seconds": 0,
+        "minutes": 0,
+        "hours": 0
+      },
+      "isRuning": false,
+      "isDone": false,
+      "isRemoved": false,
+      "id": 2
     }
   ]
 }

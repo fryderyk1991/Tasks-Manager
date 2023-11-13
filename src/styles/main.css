@@ -1,3 +1,11 @@
 body {
     background: #dcdcdc;
 }
+.task__btn--done {
+    background-color: red;
+    color: white;
+}
+.task__btn--done-done {
+    background-color: green;
+    color: white;
+}
