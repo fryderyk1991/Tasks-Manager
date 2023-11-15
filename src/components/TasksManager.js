@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { create, load, update, deleteData} from '../fetchTask'
 class TasksManager extends React.Component {
     state = {
@@ -66,7 +65,7 @@ class TasksManager extends React.Component {
                 if (task.id === id) {
                     update(id, task)
                     clearInterval(task.intervalId);
-                    return { ...task, isRuning: task.isRuning = false};
+                    return { ...task, isRuning: task.isRuning = false, intervalId: task.intervalId = 0};
                 }
                 return task;
             });
@@ -74,10 +73,11 @@ class TasksManager extends React.Component {
                 tasks: newTasks,
             };
         });
+        console.log(this.state.tasks)
     };
     startAndStopTheTask = (e,id) => {
         const currentBtn = e.target;
-        if (currentBtn.innerText === 'start') {
+        if (currentBtn.innerText === 'Start') {
             this.startTask(id);
         } else {
             this.stopTask(id);
@@ -90,13 +90,14 @@ class TasksManager extends React.Component {
     } 
 
     taskCompleted = id => {
+        console.log(this.state.tasks)
         this.setState((state) => {
             const newTasks = state.tasks.map((task) => {
                 if (task.id === id) {
                     update(id, task)
                     clearInterval(task.intervalId);
                     if(!task.isDone) {
-                        return { ...task, isRuning: task.isRuning = false, isDone: task.isDone = true};
+                        return { ...task, isRuning: task.isRuning = false, isDone: task.isDone = true, intervalId: task.intervalId = 0};
                     }
                 }
                 return task;
@@ -159,13 +160,12 @@ class TasksManager extends React.Component {
         return time < 10 ? '0' + time : time;
     }
     renderTasks(arr) {
-         
-        const task = arr.map(item => <section className='task__container' key={item.id}>
-            <header className='task__header'>{item.name}, {this.addZero(item.time.hours)}:{this.addZero(item.time.minutes)}:{this.addZero(item.time.seconds)}</header>
+        const task = arr.map(item => <section className='task__section' key={item.id}>
+            <header className='task__header header'>{item.name} <span className='header__span--time'>{this.addZero(item.time.hours)}:{this.addZero(item.time.minutes)}:{this.addZero(item.time.seconds)}</span></header>
             <footer className='task__footer'>
-                <button disabled={item.isDone ? 'disabled' : null} className='task__btn task__btn--start' onClick={(e) => this.startAndStopTheTask(e, item.id) }>{item.isRuning ? 'stop' : 'start'}</button>
-                 <button className={`${item.isDone ? 'task__btn task__btn--done-done' : 'task__btn  task__btn--done'}`} onClick={() => this.taskCompleted(item.id) }>done</button>
-                <button disabled={item.isDone ? null : 'disabled'} className='task__btn task__btn--delete' onClick={() => this.deleteTask(item.id) }>delete</button>
+                <button disabled={item.isDone ? 'disabled' : null} className='task__btn task__btn--start' onClick={(e) => this.startAndStopTheTask(e, item.id) }>{item.isRuning ? 'Stop' : 'Start' }</button>
+                <button className={`${item.isDone ? 'task__btn task__btn--done-done' : 'task__btn  task__btn--done'}`} onClick={() => this.taskCompleted(item.id) }>Done</button>
+                <button disabled={item.isDone ? null : 'disabled'} className='task__btn task__btn--delete' onClick={() => this.deleteTask(item.id) }>Delete</button>
             </footer>
         </section>)
 
@@ -182,11 +182,11 @@ class TasksManager extends React.Component {
         const { name, tasks } = this.state;
         return (
             <>
+            <h1 className='heading'>Task manager</h1>
             <div className='form__container'>
             <form className='form' onSubmit={ this.submitHandler }>
-                <label className='form__label'>Name</label>
-                <input className='form__input' value={ name } onChange={ this.inputChange }/>
-                <button type='submit' className='form__submit--button'>Add Task</button>
+                <input className='form__input form__item' value={ name } onChange={ this.inputChange }/>
+                <button type='submit' className='form__submit--button form__item'>Add Task</button>
             </form>
             </div>
             <div className='task__container'>{this.renderTasks(tasks)}</div>

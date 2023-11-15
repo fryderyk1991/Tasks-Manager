@@ -1,59 +1,99 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 body {
-    background-color: #a2a8d3;
+    background-color: #385170;
+    font-family: 'Roboto', sans-serif;
 }
-button {
-    color: inherit;
-}
-.task__btn--done {
-    background-color: red;
-    color: white;
-}
-.task__btn--done-done {
-    background-color: green;
-    color: white;
+.heading {
+    text-align: center;
+    margin-top: 10px;
+    color: #ececec;
 }
 .form__container { 
     max-width: 80%;
-    margin: 0 auto 20px;
+    margin: 30px auto;
 }
 .form {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
 }
 .form__input {
-    margin: 0 5px;
-    padding: 5px 5px;
-    border-radius: 3px;
-    border: #38598b 1px solid;
     outline: none;
+    font-family: 'Roboto', sans-serif;
 }
 .form__submit--button {
-    padding: 5px 10px;
-    border-radius: 3px;
-    border: 1px #e7eaf6 solid;
-    background-color: #a2a8d3;
+    margin-left: 5px;
+    font-family: 'Roboto', sans-serif;
     cursor: pointer;
 }
-
+.form__item {
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    background: #ececec;
+}
 .task__container {
-    max-width: 80%;
     margin: 0 auto;
+    max-width: 70%;
+}
+.task__section {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.task__header {
-    text-align: center;
-    font-size: 16px;
-    color: #e7eaf6;
-}
-.task__footer {
-    margin: 5px 0;
+    justify-content: space-around;
+    align-items: center;
+    padding: 15px;
+    background-color: #ececec;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 .task__btn {
-    padding: 5px 10px;
-    border-radius: 3px;
-    border: none;
+    margin: 0 2px;
+    padding: 8px;
+    outline: none;
+    border: 1px solid #385170;
+    cursor: pointer;
+    border-radius: 5px;
 }
+.task__btn--done {
+    position: relative;
+    z-index: 10;
+    transition: all 300ms ease-in;
+}
+.task__btn--done-done {
+    background-color: #42b883;
+}
+.task__btn--done:hover::after {
+    width: 100%;
+    z-index: -1;
+}
+.task__btn--done:hover {
+    color: white;
+    
+}
+.task__btn--done::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    border-radius: 5px;
+    background-color: #42b883;
+    transition: all 300ms ease-in;
+    z-index: -1;
+}
+.header__span--time {
+    margin-left: 15px;
+}
+
+@media (max-width: 480px) {
+   .task__section {
+    flex-direction: column;
+   }
+   .task__footer {
+    margin-top: 10px;
+   }
+  }

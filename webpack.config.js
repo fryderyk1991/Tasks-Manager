@@ -44,7 +44,7 @@ module.exports = {
             // wskazuję plik źródłowy
             filename: 'index.html'
             // określam nazwę dla pliku
-        })
+        }),
     ]
 }
 // eksportuję ustawienia dla webpack-a
