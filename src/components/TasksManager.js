@@ -43,14 +43,14 @@ class TasksManager extends React.Component {
             alert('add task!');
         }
     }  
-    startTask = (currentId) => {
+    startTask = (id) => {
         const intervalId = setInterval(() => {
-            this.incrementTime(currentId)
+            this.incrementTime(id)
         }, 1000)
         this.setState((state) => {
             const newTasks = state.tasks.map((task) => {
-                if (task.id === currentId) {
-                    update(currentId, task)
+                if (task.id === id) {
+                    update(id, task)
                     return { ...task, isRuning: task.isRuning = true, intervalId: intervalId};
                 }
                 return task;
@@ -60,11 +60,11 @@ class TasksManager extends React.Component {
             };
         });
     };
-    stopTask = (currentId) => {
+    stopTask = (id) => {
         this.setState((state) => {
             const newTasks = state.tasks.map((task) => {
-                if (task.id === currentId) {
-                    update(currentId, task)
+                if (task.id === id) {
+                    update(id, task)
                     clearInterval(task.intervalId);
                     return { ...task, isRuning: task.isRuning = false};
                 }
@@ -75,13 +75,12 @@ class TasksManager extends React.Component {
             };
         });
     };
-    startAndStopTheTask = e => {
+    startAndStopTheTask = (e,id) => {
         const currentBtn = e.target;
-        const currentId = +currentBtn.parentElement.id;
         if (currentBtn.innerText === 'start') {
-            this.startTask(currentId);
+            this.startTask(id);
         } else {
-            this.stopTask(currentId);
+            this.stopTask(id);
         }
     }
 
@@ -90,13 +89,11 @@ class TasksManager extends React.Component {
         return sorted;
     } 
 
-    taskCompleted = e => {
-        const currentBtn = e.target;
-        const currentId = +currentBtn.parentElement.id;
+    taskCompleted = id => {
         this.setState((state) => {
             const newTasks = state.tasks.map((task) => {
-                if (task.id === currentId) {
-                    update(currentId, task)
+                if (task.id === id) {
+                    update(id, task)
                     clearInterval(task.intervalId);
                     if(!task.isDone) {
                         return { ...task, isRuning: task.isRuning = false, isDone: task.isDone = true};
@@ -115,15 +112,11 @@ class TasksManager extends React.Component {
         return filtered;
     }
    
-    deleteTask = e => {
-        const { tasks } = this.state;
-        console.log(tasks)
-        const currentBtn = e.target;
-        const currentId = +currentBtn.parentElement.id;
+    deleteTask = id => {
         this.setState((state) => {
             const newTasks = state.tasks.map((task) => {
-                if (task.id === currentId) {
-                    deleteData(currentId)
+                if (task.id === id) {
+                    deleteData(id)
                     return { ...task, isRuning: task.isRuning = false, isDone: task.isDone = true, isRemoved: task.isRemoved = true};
                 }
                 return task;
@@ -161,13 +154,18 @@ class TasksManager extends React.Component {
             };
         });
     }
+
+    addZero(time) {
+        return time < 10 ? '0' + time : time;
+    }
     renderTasks(arr) {
+         
         const task = arr.map(item => <section className='task__container' key={item.id}>
-            <header className='task__header'>{item.name}, {item.time.hours < 10 ? '0' + item.time.hours : item.time.hours}:{item.time.minutes < 10 ? '0' + item.time.minutes : item.time.minutes}:{item.time.seconds < 10 ? '0' + item.time.seconds : item.time.seconds}</header>
-            <footer className='task__footer' id={item.id}>
-                <button disabled={item.isDone ? 'disabled' : null} className='task__btn task__btn--start' onClick={ this.startAndStopTheTask }>{item.isRuning ? 'stop' : 'start'}</button>
-                 <button className={`${item.isDone ? 'task__btn task__btn--done-done' : 'task__btn  task__btn--done'}`} onClick={ this.taskCompleted }>done</button>
-                <button disabled={item.isDone ? null : 'disabled'} className='task__btn task__btn--delete' onClick={ this.deleteTask }>delete</button>
+            <header className='task__header'>{item.name}, {this.addZero(item.time.hours)}:{this.addZero(item.time.minutes)}:{this.addZero(item.time.seconds)}</header>
+            <footer className='task__footer'>
+                <button disabled={item.isDone ? 'disabled' : null} className='task__btn task__btn--start' onClick={(e) => this.startAndStopTheTask(e, item.id) }>{item.isRuning ? 'stop' : 'start'}</button>
+                 <button className={`${item.isDone ? 'task__btn task__btn--done-done' : 'task__btn  task__btn--done'}`} onClick={() => this.taskCompleted(item.id) }>done</button>
+                <button disabled={item.isDone ? null : 'disabled'} className='task__btn task__btn--delete' onClick={() => this.deleteTask(item.id) }>delete</button>
             </footer>
         </section>)
 
