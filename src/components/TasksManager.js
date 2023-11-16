@@ -4,11 +4,7 @@ class TasksManager extends React.Component {
     state = {
         name: '',
         tasks: [],
-        time: {
-            seconds: 0,
-            minutes: 0,
-            hours:0
-        },
+        time: 0,
     }
   
     inputChange = e => {
@@ -75,14 +71,6 @@ class TasksManager extends React.Component {
         });
         console.log(this.state.tasks)
     };
-    startAndStopTheTask = (e,id) => {
-        const currentBtn = e.target;
-        if (currentBtn.innerText === 'Start') {
-            this.startTask(id);
-        } else {
-            this.stopTask(id);
-        }
-    }
 
     sortTask = (arr) => {
         const sorted = arr.sort((a, b) => (a.isDone ? 1 : 0) - (b.isDone ? 1 : 0));
@@ -131,21 +119,7 @@ class TasksManager extends React.Component {
         this.setState((state) => {
             const newTasks = state.tasks.map((task) => {
                 if (task.id === id) {
-                    let newSeconds = task.time.seconds + 1;
-                    let newMinutes = task.time.minutes;
-                    
-                    if (newSeconds === 60) {
-                        newSeconds = 0;
-                        newMinutes += 1;
-                    }
-    
-                    const newTime = {
-                        ...task.time,
-                        seconds: newSeconds,
-                        minutes: newMinutes,
-                    };
-    
-                    return { ...task, time: newTime };
+                    return { ...task, time: task.time + 1}
                 }
                 return task;
             });
@@ -159,11 +133,19 @@ class TasksManager extends React.Component {
     addZero(time) {
         return time < 10 ? '0' + time : time;
     }
+
+    renderTime(seconds) {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const remainingSeconds = seconds % 60;
+
+        return `${this.addZero(hours)}:${this.addZero(minutes)}:${this.addZero(remainingSeconds)}`;
+    }
     renderTasks(arr) {
         const task = arr.map(item => <section className='task__section' key={item.id}>
-            <header className='task__header header'>{item.name} <span className='header__span--time'>{this.addZero(item.time.hours)}:{this.addZero(item.time.minutes)}:{this.addZero(item.time.seconds)}</span></header>
+            <header className='task__header header'>{item.name} <span className='header__span--time'>{this.renderTime(item.time)}</span></header>
             <footer className='task__footer'>
-                <button disabled={item.isDone ? 'disabled' : null} className='task__btn task__btn--start' onClick={(e) => this.startAndStopTheTask(e, item.id) }>{item.isRuning ? 'Stop' : 'Start' }</button>
+                <button disabled={item.isDone ? 'disabled' : null} className='task__btn task__btn--start' onClick={() => item.isRuning ? this.stopTask(item.id) : this.startTask(item.id)}>{item.isRuning ? 'Stop' : 'Start' }</button>
                 <button className={`${item.isDone ? 'task__btn task__btn--done-done' : 'task__btn  task__btn--done'}`} onClick={() => this.taskCompleted(item.id) }>Done</button>
                 <button disabled={item.isDone ? null : 'disabled'} className='task__btn task__btn--delete' onClick={() => this.deleteTask(item.id) }>Delete</button>
             </footer>
