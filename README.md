@@ -3,7 +3,7 @@ I would like to present you live version of [Tasks-Manager](link) - a simple tas
 After user submits the task, he sends data to the local API created with 
 [json-server](https://github.com/typicode/json-server). 
 
-Every change in task is sent to API. When the task is done, you will see task on the last position. It's also possible to delete the finshed task. 
+Every change in task is sent to API. When the task is done, you will see task on the last position. It's also possible to delete the finished task. 
 
 
 ## 💡 Technologies
