@@ -13,11 +13,7 @@ Every change in task is send to API. When the task is done you will see task on 
                   
  The project uses [node](https://nodejs.org/en/) and [npm](https://www.npmjs.com/). Having them installed, type into the terminal: `npm i`.
  
- This project uses [json-server](https://github.com/typicode/json-server)
- 
-  After installing it type into the terminal: `
-json-server --watch ./db/data.json --port 3005
-`
+This project uses [json-server](https://github.com/typicode/json-server). After installing it type into the terminal: `json-server --watch ./db/data.json --port 3005`
 
 We set a port other than the default (3000) to make sure nothing is blocking it.
  
