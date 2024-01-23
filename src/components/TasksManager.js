@@ -1,5 +1,6 @@
 import React from 'react';
-import { create, load, update, deleteData} from '../fetchTask'
+import { create, load, update, deleteData} from '../fetchTask';
+
 class TasksManager extends React.Component {
     state = {
         name: '',
