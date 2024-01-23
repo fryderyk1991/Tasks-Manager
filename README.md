@@ -1,5 +1,6 @@
- # Tasks-Manager
-I would like to present you live version of [Tasks-Manager](link) - a simple task management application.
+![task-manager](https://github.com/fryderyk1991/Tasks-Manager/assets/95125510/2d96d210-c389-4f8c-9896-b57da8097067)
+# Tasks-Manager
+I would like to present you live version of [Tasks-Manager](https://aquamarine-figolla-31d676.netlify.app/) - a simple task management application.
 After user submits the task, he sends data to the local API created with 
 [json-server](https://github.com/typicode/json-server). 
 
